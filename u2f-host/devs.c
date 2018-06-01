@@ -197,7 +197,6 @@ new_device (u2fh_devs * devs)
       return NULL;
     }
   memset (new, 0, sizeof (struct u2fdevice));
-  new->id = devs->max_id++;
   if (devs->first == NULL)
     {
       devs->first = new;
@@ -241,6 +240,7 @@ init_device (u2fh_devs * devs, struct u2fdevice *dev)
   unsigned char nonce[] = { 0x8, 0x7, 0x6, 0x5, 0x4, 0x3, 0x2, 0x1 };
   size_t resplen = sizeof (resp);
   dev->cid = CID_BROADCAST;
+  dev->id = devs->max_id;
 
   if (u2fh_sendrecv
       (devs, dev->id, U2FHID_INIT, nonce, sizeof (nonce), resp,
@@ -258,6 +258,7 @@ init_device (u2fh_devs * devs, struct u2fdevice *dev)
     {
       return U2FH_TRANSPORT_ERROR;
     }
+  devs->max_id++;
   return U2FH_OK;
 }
 
