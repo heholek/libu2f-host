@@ -310,9 +310,8 @@ u2fh_devs_init (u2fh_devs ** devs)
 /**
  * u2fh_devs_discover:
  * @devs: device handle, from u2fh_devs_init().
- * @max_index: will on return be set to the maximum index, may be NULL; if
- *   there is 1 device this will be 0, if there are 2 devices this
- *   will be 1, and so on.
+ * @max_index: can be used as a way to tell if the device list has changed,
+ * this will be increased for both added and removed devices. May be NULL.
  *
  * Discover and open new devices.  This function can safely be called
  * several times and will free resources associated with unplugged
@@ -434,6 +433,7 @@ u2fh_devs_discover (u2fh_devs * devs, unsigned *max_index)
 	    {
 	      fprintf (stderr, "device %s looks dead.\n", dev->device_path);
 	    }
+	  devs->max_id++;
 	  dev = close_device (devs, dev);
 	}
     }
