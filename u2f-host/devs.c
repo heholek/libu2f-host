@@ -403,8 +403,19 @@ u2fh_devs_discover (u2fh_devs * devs, unsigned *max_index)
 				   dev->versionBuild, dev->capFlags);
 			}
 		    }
+		  else if (debug)
+		    {
+		      fprintf (stderr,
+			       "Failed to get a product string for device %s\n",
+			       dev->device_path);
+		    }
 		  res = U2FH_OK;
 		  continue;
+		}
+	      else if (debug)
+		{
+		  fprintf (stderr, "Failed to initialize device %s\n",
+			   dev->device_path);
 		}
 	    }
 	  close_device (devs, dev);
